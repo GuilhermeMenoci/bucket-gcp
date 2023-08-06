@@ -1,7 +1,5 @@
 package com.bucket.controller;
 
-import java.util.Map;
-
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -9,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +26,7 @@ public class DonwloadController {
 	
 	@GetMapping()
 	@ResponseBody
-	public ResponseEntity<Resource> getFile(@RequestHeader Map<String, String> headers) {
+	public ResponseEntity<Resource> getFile() {
 		DownloadResponseVO download = arquivoService.download();
 		
 		HttpHeaders headersOut = new HttpHeaders();
