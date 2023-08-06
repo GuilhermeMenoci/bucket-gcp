@@ -24,7 +24,6 @@ public class UploadController {
 
 	private final ArquivoService arquivoService;
 
-	
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping()
 	public void uploadFile(@RequestHeader Map<String, String> headers, @RequestParam("file") MultipartFile file) {

@@ -1,5 +1,6 @@
 package com.bucket.service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -7,9 +8,13 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bucket.model.DownloadResponseVO;
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
@@ -50,6 +55,23 @@ public class ArquivoService {
 			throw new RuntimeException("Não foi possível anexar o arquivo ", e);
 		}
 
+	}
+	
+	public DownloadResponseVO download() {
+
+		Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
+		BlobId blobId = BlobId.of(bucket, "2023/8/5/1a84f9bd-248e-44ba-b8a2-253c400f233f");
+		Blob retorno = storage.get(blobId);
+		
+		ByteArrayOutputStream b = new ByteArrayOutputStream();
+		retorno.downloadTo(b, Blob.BlobSourceOption.generationMatch());
+		byte[] res = b.toByteArray();
+		Resource r = new ByteArrayResource(res);
+		
+		return DownloadResponseVO.builder()
+				.nome("Teste")
+				.arquivo(r)
+				.build();
 	}
 	
 	
